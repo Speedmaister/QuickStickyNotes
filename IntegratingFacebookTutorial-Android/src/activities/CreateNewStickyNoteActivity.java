@@ -7,6 +7,7 @@ import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v4.app.NavUtils;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -18,9 +19,9 @@ import com.parse.integratingfacebooktutorial.R;
 public class CreateNewStickyNoteActivity extends Activity implements
 		ILogoutMenuItem {
 
-	EditText editTitleHolder;
-	EditText editContentHolder;
-	ActionBar actionBar;
+	private EditText editTitleHolder;
+	private EditText editContentHolder;
+	private ActionBar actionBar;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -31,6 +32,7 @@ public class CreateNewStickyNoteActivity extends Activity implements
 		editTitleHolder = (EditText) findViewById(R.id.newStickyNoteTitle);
 		editContentHolder = (EditText) findViewById(R.id.newStickyNoteContent);
 		actionBar = getActionBar();
+		actionBar.setDisplayHomeAsUpEnabled(true);
 	}
 
 	@Override
@@ -58,6 +60,9 @@ public class CreateNewStickyNoteActivity extends Activity implements
 	public boolean onMenuItemSelected(int featureId, MenuItem item) {
 		int itemId = item.getItemId();
 		switch (itemId) {
+		case android.R.id.home:
+	        NavUtils.navigateUpFromSameTask(this);
+	        return true;
 		case R.id.createNewMenuItem:
 			createNewStickyNote();
 			return true;

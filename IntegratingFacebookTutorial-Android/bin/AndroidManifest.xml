@@ -9,7 +9,7 @@
 
     <uses-sdk
         android:minSdkVersion="14"
-        android:targetSdkVersion="17" />
+        android:targetSdkVersion="18" />
 
     <application
         android:name="activities.ParseInitializer"
@@ -35,11 +35,27 @@
             android:label="@string/app_name" />
         <activity
             android:name="activities.StickyNoteDetailedActivity"
-            android:label="@string/app_name" >
+            android:label="@string/app_name"
+            android:parentActivityName="activities.UserListOfNotesActivity" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="activities.UserListOfNotesActivity" />
         </activity>
         <activity
             android:name="activities.CreateNewStickyNoteActivity"
-            android:label="@string/app_name" >
+            android:label="@string/app_name"
+            android:parentActivityName="activities.UserListOfNotesActivity" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="activities.UserListOfNotesActivity" />
+        </activity>
+        <activity
+            android:name="activities.EditStickyNoteActivity"
+            android:label="@string/app_name"
+            android:parentActivityName="activities.StickyNoteDetailedActivity" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="activities.StickyNoteDetailedActivity" />
         </activity>
 
         <meta-data

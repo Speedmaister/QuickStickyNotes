@@ -83,16 +83,16 @@ public class UserListOfNotesActivity extends ListActivity implements
 	public boolean onCreateOptionsMenu(Menu menu) {
 		MenuInflater inflater = getMenuInflater();
 		inflater.inflate(R.menu.main, menu);
-		
+
 		MenuItem accept = menu.findItem(R.id.acceptMenuItem);
 		accept.setVisible(false);
 
 		MenuItem edit = menu.findItem(R.id.editMenuItem);
 		edit.setVisible(false);
-		
+
 		MenuItem remove = menu.findItem(R.id.discardMenuItem);
 		remove.setVisible(false);
-		
+
 		return true;
 	}
 
@@ -128,6 +128,9 @@ public class UserListOfNotesActivity extends ListActivity implements
 				stickyNoteSelected.getTitle());
 		stickyNoteSelectedBundle.putString("content",
 				stickyNoteSelected.getContent());
+		stickyNoteSelectedBundle.putString("objectId",
+				stickyNoteSelected.getObjectId());
+		stickyNoteSelectedBundle.putInt("position", position);
 		stickyNoteDetailedIntent.putExtras(stickyNoteSelectedBundle);
 		startActivity(stickyNoteDetailedIntent);
 	}
@@ -209,7 +212,7 @@ public class UserListOfNotesActivity extends ListActivity implements
 
 		};
 		userNotes = StickyNotesPersister.GetNotes();
-		userNotes = StickyNotesPersister.LoadNotesFromParse(facebookId,
+		userNotes = StickyNotesPersister.loadNotesFromParse(facebookId,
 				refreshAdapter);
 		adapter = new StickyNotesAdapter(UserListOfNotesActivity.this,
 				userNotes);
