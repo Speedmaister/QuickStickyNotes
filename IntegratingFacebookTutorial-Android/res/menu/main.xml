@@ -13,12 +13,6 @@
         android:showAsAction="ifRoom"
         android:title="@string/createNewTitle"/>
     
-     <item
-        android:id="@+id/acceptMenuItem"
-        android:icon="@drawable/ic_action_accept"
-        android:showAsAction="ifRoom"
-        android:title="@string/acceptTitle"/>
-    
     <item
         android:id="@+id/discardMenuItem"
         android:icon="@drawable/ic_action_discard"

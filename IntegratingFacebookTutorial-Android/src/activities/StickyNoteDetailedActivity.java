@@ -1,5 +1,12 @@
 package activities;
 
+import java.util.ArrayList;
+
+import models.ContentTypes;
+import models.ImageContent;
+import models.StickyNote;
+import models.StickyNoteContent;
+import models.TextContent;
 import android.app.ActionBar;
 import android.app.Activity;
 import android.app.ProgressDialog;
@@ -8,9 +15,12 @@ import android.os.Bundle;
 import android.os.Handler.Callback;
 import android.os.Message;
 import android.support.v4.app.NavUtils;
+import android.util.Pair;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.parse.ParseUser;
@@ -21,13 +31,14 @@ import datapersister.StickyNotesPersister;
 public class StickyNoteDetailedActivity extends Activity implements
 		ILogoutMenuItem {
 
-	private String stickyNoteId;
-	private String stickyNoteTitle;
-	private String stickyNoteContent;
+	// private String stickyNoteId;
+	private StickyNote stickyNote;
+	private int position;
 	private TextView stickyNoteTitleHolder;
-	private TextView stickyNoteContentHolder;
+	private LinearLayout stickyNoteContentHolder;
 	private ProgressDialog progressDialog;
 	private ActionBar actionBar;
+	private StickyNoteContent cachedStickyNoteContent;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -38,20 +49,47 @@ public class StickyNoteDetailedActivity extends Activity implements
 		getActionBar();
 
 		stickyNoteTitleHolder = (TextView) findViewById(R.id.stickyNoteTitle);
-		stickyNoteContentHolder = (TextView) findViewById(R.id.stickyNoteContent);
+		stickyNoteContentHolder = (LinearLayout) findViewById(R.id.stickyNoteContent);
 		actionBar = getActionBar();
 		actionBar.setDisplayHomeAsUpEnabled(true);
 
 		Intent intent = getIntent();
 		Bundle selectedStickyNoteBundle = intent.getExtras();
+		position = selectedStickyNoteBundle.getInt("position");
+		stickyNote = StickyNotesPersister.getNote(position);
 
-		stickyNoteTitle = selectedStickyNoteBundle.getString("title");
-		stickyNoteContent = selectedStickyNoteBundle.getString("content");
-		stickyNoteId = selectedStickyNoteBundle.getString("objectId");
-		selectedStickyNoteBundle.getInt("position");
+		stickyNoteTitleHolder.setText(stickyNote.getTitle());
+		cachedStickyNoteContent = stickyNote.getContent();
+		displayStickyNoteContent();
+		// Fill FIELDS
+	}
 
-		stickyNoteTitleHolder.setText(stickyNoteTitle);
-		stickyNoteContentHolder.setText(stickyNoteContent);
+	private void displayStickyNoteContent() {
+		ArrayList<Pair<ContentTypes, Object>> contents = cachedStickyNoteContent.getContents();
+		int size = contents.size();
+		for (int i = 0; i < size; i++) {
+			Pair<ContentTypes, Object> element = contents.get(i);
+			switch (element.first) {
+			case Text:
+				TextContent text = (TextContent) element.second;
+				TextView textHolder = new TextView(this);
+				textHolder.setText(text.getText());
+				stickyNoteContentHolder.addView(textHolder);
+				break;
+			case Contact:
+				// TODO
+				break;
+			case Image:
+				ImageContent imageCont = (ImageContent) element.second;
+				ImageView imageHolder = new ImageView(this);
+				imageHolder.setImageBitmap(imageCont.getImage());
+				stickyNoteContentHolder.addView(imageHolder);
+				break;
+			case Map:
+				// TODO
+				break;
+			}
+		}
 	}
 
 	@Override
@@ -65,9 +103,6 @@ public class StickyNoteDetailedActivity extends Activity implements
 		MenuItem newStickyNote = menu.findItem(R.id.createNewMenuItem);
 		newStickyNote.setVisible(false);
 
-		MenuItem accept = menu.findItem(R.id.acceptMenuItem);
-		accept.setVisible(false);
-
 		return true;
 	}
 
@@ -76,8 +111,8 @@ public class StickyNoteDetailedActivity extends Activity implements
 		int itemId = item.getItemId();
 		switch (itemId) {
 		case android.R.id.home:
-	        NavUtils.navigateUpFromSameTask(this);
-	        return true;
+			NavUtils.navigateUpFromSameTask(this);
+			return true;
 		case R.id.editMenuItem:
 			startEditStickyNoteActivity();
 			return true;
@@ -97,9 +132,7 @@ public class StickyNoteDetailedActivity extends Activity implements
 				EditStickyNoteActivity.class);
 		Bundle stickyNoteBundle = new Bundle();
 
-		stickyNoteBundle.putString("title", stickyNoteTitle);
-		stickyNoteBundle.putString("content", stickyNoteContent);
-		stickyNoteBundle.putString("objectId", stickyNoteId);
+		stickyNoteBundle.putInt("position", position);
 
 		editStickyNoteIntent.putExtras(stickyNoteBundle);
 		startActivity(editStickyNoteIntent);
@@ -119,7 +152,7 @@ public class StickyNoteDetailedActivity extends Activity implements
 
 		progressDialog = ProgressDialog.show(this, "Delete sticky note.",
 				"Deleting...");
-		StickyNotesPersister.deleteStickyNote(stickyNoteId, dismissDialog);
+		StickyNotesPersister.deleteStickyNote(stickyNote.getObjectId(), dismissDialog);
 	}
 
 	private void startUserListOfNotesActivity() {

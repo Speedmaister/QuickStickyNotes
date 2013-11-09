@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import models.StickyNote;
+import models.StickyNoteContent;
 import android.os.Handler.Callback;
 import android.os.Message;
 
@@ -17,7 +18,7 @@ import com.parse.ParseUser;
 public class StickyNotesPersister {
 	private static List<StickyNote> notes = new ArrayList<StickyNote>();
 
-	public static List<StickyNote> GetNotes() {
+	public static List<StickyNote> getNotes() {
 		return notes;
 	}
 
@@ -63,7 +64,7 @@ public class StickyNotesPersister {
 	}
 
 	public static void saveChangesToStickyNote(String stickyNoteId,
-			final String stickyNoteTitle, final String stickyNoteContent) {
+			final String stickyNoteTitle, final StickyNoteContent stickyNoteContent) {
 		ParseQuery<StickyNote> query = ParseQuery.getQuery("StickyNote");
 		query.getInBackground(stickyNoteId, new GetCallback<StickyNote>() {
 
@@ -74,6 +75,10 @@ public class StickyNotesPersister {
 				stickyNote.saveInBackground();
 			}
 		});
+	}
+
+	public static StickyNote getNote(int position) {
+		return notes.get(position);
 	}
 
 }

@@ -29,12 +29,24 @@
         android:text="@string/contentTag"
         android:textSize="15sp" />
 
-    <EditText
-        android:id="@+id/newStickyNoteContent"
+    <LinearLayout
+        android:id="@+id/contentHolder"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="10dp"
-        android:inputType="textMultiLine"
-        android:textSize="20sp" />
+        android:orientation="vertical" >
+
+        <EditText
+            android:id="@+id/newStickyNoteContent"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="10dp"
+            android:inputType="textMultiLine"
+            android:textSize="20sp" />
+
+        <!-- <ImageView android:id="@+id/imageHolder" -->
+        <!-- android:contentDescription="Stuff" -->
+        <!-- android:layout_width="fill_parent" -->
+        <!-- android:layout_height="wrap_content"/> -->
+    </LinearLayout>
 
 </LinearLayout>

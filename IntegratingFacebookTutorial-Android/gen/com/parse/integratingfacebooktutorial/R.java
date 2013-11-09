@@ -166,6 +166,8 @@ containing a value of this type.
          */
         public static final int activity_horizontal_margin=0x7f07000c;
         public static final int activity_vertical_margin=0x7f07000d;
+        public static final int childview_horizontal_margin=0x7f07000e;
+        public static final int childview_vertical_margin=0x7f07000f;
         public static final int com_facebook_loginview_height=0x7f070007;
         public static final int com_facebook_loginview_padding_bottom=0x7f070005;
         public static final int com_facebook_loginview_padding_left=0x7f070002;
@@ -213,19 +215,22 @@ containing a value of this type.
         public static final int com_facebook_top_button=0x7f02001e;
         public static final int com_facebook_usersettingsfragment_background_gradient=0x7f02001f;
         public static final int ic_action_accept=0x7f020020;
-        public static final int ic_action_discard=0x7f020021;
-        public static final int ic_action_edit=0x7f020022;
-        public static final int ic_action_new=0x7f020023;
-        public static final int ic_action_remove=0x7f020024;
-        public static final int ic_action_search=0x7f020025;
-        public static final int ic_launcher=0x7f020026;
-        public static final int login_button_focused=0x7f020027;
-        public static final int login_button_normal=0x7f020028;
-        public static final int login_button_pressed=0x7f020029;
-        public static final int table_round_shape=0x7f02002a;
+        public static final int ic_action_add_person=0x7f020021;
+        public static final int ic_action_discard=0x7f020022;
+        public static final int ic_action_edit=0x7f020023;
+        public static final int ic_action_map=0x7f020024;
+        public static final int ic_action_new=0x7f020025;
+        public static final int ic_action_new_picture=0x7f020026;
+        public static final int ic_action_remove=0x7f020027;
+        public static final int ic_action_search=0x7f020028;
+        public static final int ic_launcher=0x7f020029;
+        public static final int login_button_focused=0x7f02002a;
+        public static final int login_button_normal=0x7f02002b;
+        public static final int login_button_pressed=0x7f02002c;
+        public static final int table_round_shape=0x7f02002d;
     }
     public static final class id {
-        public static final int acceptMenuItem=0x7f040020;
+        public static final int acceptMenuItem=0x7f04001f;
         public static final int com_facebook_login_activity_progress_bar=0x7f040005;
         public static final int com_facebook_picker_activity_circle=0x7f040004;
         public static final int com_facebook_picker_checkbox=0x7f040007;
@@ -245,22 +250,26 @@ containing a value of this type.
         public static final int com_facebook_usersettingsfragment_login_button=0x7f040017;
         public static final int com_facebook_usersettingsfragment_logo_image=0x7f040015;
         public static final int com_facebook_usersettingsfragment_profile_name=0x7f040016;
-        public static final int createNewMenuItem=0x7f04001f;
-        public static final int discardMenuItem=0x7f040021;
-        public static final int editMenuItem=0x7f040022;
+        public static final int contentHolder=0x7f040019;
+        public static final int createNewMenuItem=0x7f040024;
+        public static final int discardMenuItem=0x7f040025;
+        public static final int editMenuItem=0x7f040026;
+        public static final int insertContactMenuItem=0x7f040021;
+        public static final int insertMapMenuItem=0x7f040022;
+        public static final int insertPictureMenuItem=0x7f040020;
         public static final int large=0x7f040002;
-        public static final int loginButton=0x7f04001b;
-        public static final int logoutMenuItem=0x7f040023;
-        public static final int newStickyNoteContent=0x7f040019;
+        public static final int loginButton=0x7f04001c;
+        public static final int logoutMenuItem=0x7f040027;
+        public static final int newStickyNoteContent=0x7f04001a;
         public static final int newStickyNoteTitle=0x7f040018;
         public static final int normal=0x7f040001;
-        public static final int noteTitle=0x7f04001a;
+        public static final int noteTitle=0x7f04001b;
         public static final int picker_subtitle=0x7f040014;
-        public static final int searchMenuItem=0x7f04001e;
+        public static final int searchMenuItem=0x7f040023;
         public static final int search_box=0x7f040013;
         public static final int small=0x7f040000;
-        public static final int stickyNoteContent=0x7f04001d;
-        public static final int stickyNoteTitle=0x7f04001c;
+        public static final int stickyNoteContent=0x7f04001e;
+        public static final int stickyNoteTitle=0x7f04001d;
     }
     public static final class layout {
         public static final int com_facebook_friendpickerfragment=0x7f030000;
@@ -283,7 +292,8 @@ containing a value of this type.
         public static final int stickynote=0x7f030011;
     }
     public static final class menu {
-        public static final int main=0x7f090000;
+        public static final int create_edit_menu=0x7f090000;
+        public static final int main=0x7f090001;
     }
     public static final class string {
         public static final int acceptTitle=0x7f050022;
@@ -315,15 +325,18 @@ containing a value of this type.
         public static final int com_facebook_usersettingsfragment_log_in_button=0x7f050008;
         public static final int com_facebook_usersettingsfragment_logged_in=0x7f050009;
         public static final int com_facebook_usersettingsfragment_not_logged_in=0x7f05000a;
-        public static final int contentTag=0x7f050025;
+        public static final int contentTag=0x7f050028;
         public static final int createNewTitle=0x7f050020;
         public static final int discardTitle=0x7f050021;
         public static final int editTitle=0x7f050023;
+        public static final int insertContactTitle=0x7f050025;
+        public static final int insertMapTitle=0x7f050026;
+        public static final int insertPictureTitle=0x7f050024;
         public static final int login=0x7f05001c;
         public static final int loginIntro=0x7f05001e;
         public static final int logout=0x7f05001d;
         public static final int searchTitle=0x7f05001f;
-        public static final int titleTag=0x7f050024;
+        public static final int titleTag=0x7f050027;
     }
     public static final class style {
         /** 

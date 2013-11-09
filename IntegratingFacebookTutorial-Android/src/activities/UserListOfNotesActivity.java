@@ -84,9 +84,6 @@ public class UserListOfNotesActivity extends ListActivity implements
 		MenuInflater inflater = getMenuInflater();
 		inflater.inflate(R.menu.main, menu);
 
-		MenuItem accept = menu.findItem(R.id.acceptMenuItem);
-		accept.setVisible(false);
-
 		MenuItem edit = menu.findItem(R.id.editMenuItem);
 		edit.setVisible(false);
 
@@ -124,13 +121,10 @@ public class UserListOfNotesActivity extends ListActivity implements
 		Intent stickyNoteDetailedIntent = new Intent(
 				UserListOfNotesActivity.this, StickyNoteDetailedActivity.class);
 		Bundle stickyNoteSelectedBundle = new Bundle();
-		stickyNoteSelectedBundle.putString("title",
-				stickyNoteSelected.getTitle());
-		stickyNoteSelectedBundle.putString("content",
-				stickyNoteSelected.getContent());
-		stickyNoteSelectedBundle.putString("objectId",
-				stickyNoteSelected.getObjectId());
-		stickyNoteSelectedBundle.putInt("position", position);
+		stickyNoteSelectedBundle.putInt("position",
+				position);
+		//stickyNoteSelectedBundle.putString("objectId",
+		//		stickyNoteSelected.getObjectId());
 		stickyNoteDetailedIntent.putExtras(stickyNoteSelectedBundle);
 		startActivity(stickyNoteDetailedIntent);
 	}
@@ -211,7 +205,7 @@ public class UserListOfNotesActivity extends ListActivity implements
 			}
 
 		};
-		userNotes = StickyNotesPersister.GetNotes();
+		userNotes = StickyNotesPersister.getNotes();
 		userNotes = StickyNotesPersister.loadNotesFromParse(facebookId,
 				refreshAdapter);
 		adapter = new StickyNotesAdapter(UserListOfNotesActivity.this,

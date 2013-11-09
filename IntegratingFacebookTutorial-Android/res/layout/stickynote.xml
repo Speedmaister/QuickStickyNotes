@@ -12,11 +12,11 @@
         android:gravity="center_horizontal"
         android:textSize="30sp" />
 
-    <TextView
+    <LinearLayout
         android:id="@+id/stickyNoteContent"
         android:layout_width="match_parent"
         android:layout_height="fill_parent"
-        android:layout_margin="10dp"
-        android:textSize="20sp" />
+        android:layout_margin="10dp" 
+        android:orientation="vertical"/>
 
 </LinearLayout>

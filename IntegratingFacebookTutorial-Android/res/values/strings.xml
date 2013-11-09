@@ -12,6 +12,9 @@
     <string name="discardTitle">Delete</string>
     <string name="acceptTitle">Accept</string>
     <string name="editTitle">Edit</string>
+    <string name="insertPictureTitle">Insert Picture</string>
+    <string name="insertContactTitle">Insert Contact</string>
+    <string name="insertMapTitle">Insert Map</string>
     <string name="titleTag">Title: </string>
     <string name="contentTag">Notes: </string>
 </resources>
