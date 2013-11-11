@@ -1,11 +1,14 @@
 package activities;
 
+import models.StickyNote;
+import models.StickyNoteContent;
 import android.os.Bundle;
 import android.support.v4.app.NavUtils;
 import android.view.MenuItem;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 
+import com.parse.ParseUser;
 import com.parse.integratingfacebooktutorial.R;
 
 public class CreateNewStickyNoteActivity extends BaseEditActivity {
@@ -42,5 +45,32 @@ public class CreateNewStickyNoteActivity extends BaseEditActivity {
 		}
 
 		return super.onMenuItemSelected(featureId, item);
+	}
+	
+	private void createNewStickyNote() {
+		//String content = editContentHolder.getText().toString();
+		String title = editTitleHolder.getText().toString();
+		StickyNoteContent content = new StickyNoteContent();
+		
+
+		boolean isContentValid = setStickyNoteContent(content);
+		boolean isTitleValid = title != null && !title.isEmpty();
+
+		if (isContentValid && isTitleValid) {
+			saveNewStickyNote(content, title);
+			startUserListOfNotesActivity();
+		} else if (!isContentValid) {
+			showPopup("Invalid notes", "Please enter some notes.");
+		} else if (!isTitleValid) {
+			showPopup("Invalid title", "Please enter a title.");
+		}
+	}
+
+	private void saveNewStickyNote(StickyNoteContent content, String title) {
+		StickyNote newStickyNote = new StickyNote();
+		newStickyNote.setTitle(title);
+		newStickyNote.setContent(content);
+		newStickyNote.setAuthor(ParseUser.getCurrentUser());
+		newStickyNote.saveInBackground();
 	}
 }

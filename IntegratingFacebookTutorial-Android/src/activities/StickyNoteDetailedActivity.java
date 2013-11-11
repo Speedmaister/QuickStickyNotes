@@ -16,9 +16,11 @@ import android.os.Handler.Callback;
 import android.os.Message;
 import android.support.v4.app.NavUtils;
 import android.util.Pair;
+import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.ViewGroup.LayoutParams;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -83,6 +85,7 @@ public class StickyNoteDetailedActivity extends Activity implements
 				ImageContent imageCont = (ImageContent) element.second;
 				ImageView imageHolder = new ImageView(this);
 				imageHolder.setImageBitmap(imageCont.getImage());
+				setImageViewLayout(imageHolder);
 				stickyNoteContentHolder.addView(imageHolder);
 				break;
 			case Map:
@@ -160,6 +163,19 @@ public class StickyNoteDetailedActivity extends Activity implements
 				UserListOfNotesActivity.class);
 		// userListOfNotesIntent.putExtra("refreshStickyNotesList", true);
 		startActivity(userListOfNotesIntent);
+	}
+	
+	private void setImageViewLayout(ImageView imageViewer) {
+		LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(
+				LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT);
+		int horizontalMargin = (int) getResources().getDimension(
+				R.dimen.childview_horizontal_margin);
+		int verticalMargin = (int) getResources().getDimension(
+				R.dimen.childview_vertical_margin);
+		lp.setMargins(horizontalMargin, verticalMargin, horizontalMargin,
+				verticalMargin);
+		lp.gravity = Gravity.LEFT;
+		imageViewer.setLayoutParams(lp);
 	}
 
 	@Override

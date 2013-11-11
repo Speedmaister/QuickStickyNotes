@@ -12,7 +12,7 @@ import com.parse.ParseClassName;
 import com.parse.ParseObject;
 import com.parse.ParseUser;
 
-import datapersister.SqliteHelper;
+import datapersister.ExternalStoragePersister;
 
 @ParseClassName("StickyNote")
 public class StickyNote extends ParseObject {
@@ -40,14 +40,19 @@ public class StickyNote extends ParseObject {
 		}.getType();
 		Type typeOfTextContent = new TypeToken<TextContent>() {
 		}.getType();
-		Type typeOfImageContent = new TypeToken<ImageContent>() {
-		}.getType();
-
 		ArrayList<Pair<ContentTypes, String>> elements = gson.fromJson(
 				contentJson, type);
-
 		StickyNoteContent content = new StickyNoteContent();
 		int size = elements.size();
+
+		readElements(gson, typeOfTextContent, elements, content, size);
+
+		return content;
+	}
+
+	private void readElements(Gson gson, Type typeOfTextContent,
+			ArrayList<Pair<ContentTypes, String>> elements,
+			StickyNoteContent content, int size) {
 		for (int i = 0; i < size; i++) {
 			Pair<ContentTypes, String> element = elements.get(i);
 			switch (element.first) {
@@ -60,23 +65,42 @@ public class StickyNote extends ParseObject {
 				// TODO
 				break;
 			case Image:
-				 ImageContent image = gson.fromJson(element.second, typeOfImageContent);
-				 content.insertImageChild(image);
+				String fileName = gson.fromJson(element.second, String.class);
+				if (ExternalStoragePersister
+						.checkIfExtStorageIsAvailableForReading()) {
+					byte[] image = ExternalStoragePersister
+							.getImageFromExtStorage(fileName);
+					ImageContent imageContent = new ImageContent(image);
+					content.insertImageChild(imageContent);
+				}
 				break;
 			case Map:
 				// TODO
 				break;
 			}
 		}
-
-		return content;
 	}
 
 	public void setContent(StickyNoteContent content) {
 		Gson gson = new Gson();
-		ArrayList<Pair<ContentTypes, String>> elements = new ArrayList<Pair<ContentTypes, String>>();
+
 		ArrayList<Pair<ContentTypes, Object>> contents = content.getContents();
 		int size = contents.size();
+
+		int imageCounter = 1;
+		ArrayList<Pair<ContentTypes, String>> elements = new ArrayList<Pair<ContentTypes, String>>();
+
+		writeElements(gson, imageCounter, elements, contents, size);
+
+		Type type = new TypeToken<ArrayList<Pair<ContentTypes, String>>>() {
+		}.getType();
+		String contentJson = gson.toJson(elements, type);
+		put("content", contentJson);
+	}
+
+	private void writeElements(Gson gson, int imageCounter,
+			ArrayList<Pair<ContentTypes, String>> elements,
+			ArrayList<Pair<ContentTypes, Object>> contents, int size) {
 		for (int i = 0; i < size; i++) {
 			Pair<ContentTypes, Object> element = contents.get(i);
 			switch (element.first) {
@@ -88,19 +112,22 @@ public class StickyNote extends ParseObject {
 				// TODO
 				break;
 			case Image:
-				String jsonImage = gson.toJson(((ImageContent)element.second).getImage());
-				elements.add(new Pair<ContentTypes, String>(ContentTypes.Image,
-						jsonImage));
+				String fileName = getTitle() + "_" + imageCounter;
+				if (ExternalStoragePersister
+						.checkIfExtStorageIsAvailableForWriting()) {
+					if (ExternalStoragePersister
+							.saveImageToExtStorage(fileName,
+									((ImageContent) element.second).getData())) {
+						elements.add(new Pair<ContentTypes, String>(
+								ContentTypes.Image, fileName));
+					}
+				}
 				break;
 			case Map:
 				// TODO
 				break;
 			}
 		}
-		Type type = new TypeToken<ArrayList<Pair<ContentTypes, String>>>() {
-		}.getType();
-		String contentJson = gson.toJson(elements, type);
-		put("content", contentJson);
 	}
 
 	public Date getDateCreated() {
