@@ -111,6 +111,9 @@ public class UserListOfNotesActivity extends ListActivity implements
 	private void onCreateNewMenuItemClicked() {
 		Intent createNewStickyNoteIntent = new Intent(this,
 				CreateNewStickyNoteActivity.class);
+		Bundle createNewStickyNoteExtras = new Bundle();
+		createNewStickyNoteExtras.putString("facebookId", facebookId);
+		createNewStickyNoteIntent.putExtras(createNewStickyNoteExtras);
 		startActivity(createNewStickyNoteIntent);
 	}
 
@@ -124,6 +127,7 @@ public class UserListOfNotesActivity extends ListActivity implements
 		Bundle stickyNoteSelectedBundle = new Bundle();
 		stickyNoteSelectedBundle.putInt("position",
 				position);
+		stickyNoteSelectedBundle.putString("facebookId", facebookId);
 		
 		stickyNoteDetailedIntent.putExtras(stickyNoteSelectedBundle);
 		startActivity(stickyNoteDetailedIntent);

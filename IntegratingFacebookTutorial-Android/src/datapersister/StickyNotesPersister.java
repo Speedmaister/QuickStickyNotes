@@ -13,7 +13,6 @@ import com.parse.FindCallback;
 import com.parse.GetCallback;
 import com.parse.ParseException;
 import com.parse.ParseQuery;
-import com.parse.ParseUser;
 
 public class StickyNotesPersister {
 	private static List<StickyNote> notes = new ArrayList<StickyNote>();
@@ -22,11 +21,10 @@ public class StickyNotesPersister {
 		return notes;
 	}
 
-	public static List<StickyNote> loadNotesFromParse(final String userId,
+	public static List<StickyNote> loadNotesFromParse(String userId,
 			final Callback refreshAdapter) {
 		ParseQuery<StickyNote> query = ParseQuery.getQuery("StickyNote");
-		ParseUser currentUser = ParseUser.getCurrentUser();
-		query.whereEqualTo("author", currentUser);
+		query.whereEqualTo("author", userId);
 		query.findInBackground(new FindCallback<StickyNote>() {
 
 			@Override
@@ -59,20 +57,6 @@ public class StickyNotesPersister {
 						dismissDialog.handleMessage(new Message());
 					}
 				});
-			}
-		});
-	}
-
-	public static void saveChangesToStickyNote(String stickyNoteId,
-			final String stickyNoteTitle, final StickyNoteContent stickyNoteContent) {
-		ParseQuery<StickyNote> query = ParseQuery.getQuery("StickyNote");
-		query.getInBackground(stickyNoteId, new GetCallback<StickyNote>() {
-
-			@Override
-			public void done(StickyNote stickyNote, ParseException e) {
-				stickyNote.setContent(stickyNoteContent);
-				stickyNote.setTitle(stickyNoteTitle);
-				stickyNote.saveInBackground();
 			}
 		});
 	}

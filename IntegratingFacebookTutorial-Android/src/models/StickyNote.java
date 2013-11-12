@@ -24,11 +24,11 @@ public class StickyNote extends ParseObject {
 		put("title", title);
 	}
 
-	public ParseUser getAuthor() {
-		return (ParseUser) get("author");
+	public String getAuthor() {
+		return getString("author");
 	}
 
-	public void setAuthor(ParseUser author) {
+	public void setAuthor(String author) {
 		put("author", author);
 	}
 
@@ -40,18 +40,21 @@ public class StickyNote extends ParseObject {
 		}.getType();
 		Type typeOfTextContent = new TypeToken<TextContent>() {
 		}.getType();
+		Type typeOfContact = new TypeToken<Contact>() {
+		}.getType();
 		ArrayList<Pair<ContentTypes, String>> elements = gson.fromJson(
 				contentJson, type);
 		StickyNoteContent content = new StickyNoteContent();
 		int size = elements.size();
 
-		readElements(gson, typeOfTextContent, elements, content, size);
+		readElements(gson, typeOfTextContent, typeOfContact, elements, content,
+				size);
 
 		return content;
 	}
 
 	private void readElements(Gson gson, Type typeOfTextContent,
-			ArrayList<Pair<ContentTypes, String>> elements,
+			Type typeOfContact, ArrayList<Pair<ContentTypes, String>> elements,
 			StickyNoteContent content, int size) {
 		for (int i = 0; i < size; i++) {
 			Pair<ContentTypes, String> element = elements.get(i);
@@ -62,10 +65,11 @@ public class StickyNote extends ParseObject {
 				content.insertTextChild(text);
 				break;
 			case Contact:
-				// TODO
+				Contact contact = gson.fromJson(element.second, typeOfContact);
+				content.insertContactChild(contact);
 				break;
 			case Image:
-				String fileName = gson.fromJson(element.second, String.class);
+				String fileName = element.second;
 				if (ExternalStoragePersister
 						.checkIfExtStorageIsAvailableForReading()) {
 					byte[] image = ExternalStoragePersister
@@ -109,7 +113,8 @@ public class StickyNote extends ParseObject {
 						gson.toJson(element.second)));
 				break;
 			case Contact:
-				// TODO
+				elements.add(new Pair<ContentTypes, String>(
+						ContentTypes.Contact, gson.toJson(element.second)));
 				break;
 			case Image:
 				String fileName = getTitle() + "_" + imageCounter;

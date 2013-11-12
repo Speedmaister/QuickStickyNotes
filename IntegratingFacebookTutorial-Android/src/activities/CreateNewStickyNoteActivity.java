@@ -23,8 +23,12 @@ public class CreateNewStickyNoteActivity extends BaseEditActivity {
 		editTitleHolder = (EditText) findViewById(R.id.newStickyNoteTitle);
 		editContentHolder = (EditText) findViewById(R.id.newStickyNoteContent);
 		contentHolder = (LinearLayout) findViewById(R.id.contentHolder);
-		actionBar = getActionBar();
+		actionBar = getActionBar();		
 		actionBar.setDisplayHomeAsUpEnabled(true);
+		
+		Intent intent = getIntent();
+		Bundle extras = intent.getExtras();
+		facebookId = extras.getString("facebookId");
 	}
 
 	@Override
@@ -42,20 +46,13 @@ public class CreateNewStickyNoteActivity extends BaseEditActivity {
 			return true;
 		case R.id.insertContactMenuItem:
 			onInsertContactMenuItemClicked();
+			return true;
 		case R.id.logoutMenuItem:
 			onLogoutMenuItemClicked();
 			return true;
 		}
 
 		return super.onMenuItemSelected(featureId, item);
-	}
-
-	private void onInsertContactMenuItemClicked() {
-		Intent pickContactIntent = new Intent(this,activities.PickContactActivity.class);
-		//
-		// PROBLEM SPOT
-		//
-	    startActivityForResult(pickContactIntent, REQUEST_PICK_CONTACT);
 	}
 
 	private void createNewStickyNote() {
@@ -80,7 +77,7 @@ public class CreateNewStickyNoteActivity extends BaseEditActivity {
 		StickyNote newStickyNote = new StickyNote();
 		newStickyNote.setTitle(title);
 		newStickyNote.setContent(content);
-		newStickyNote.setAuthor(ParseUser.getCurrentUser());
+		newStickyNote.setAuthor(facebookId);
 		newStickyNote.saveInBackground();
 	}
 }

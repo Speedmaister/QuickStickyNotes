@@ -17,4 +17,5 @@
     <string name="insertMapTitle">Insert Map</string>
     <string name="titleTag">Title: </string>
     <string name="contentTag">Notes: </string>
+    <string name="callButtonTag">Call</string>
 </resources>

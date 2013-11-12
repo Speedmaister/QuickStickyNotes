@@ -231,6 +231,7 @@ containing a value of this type.
     }
     public static final class id {
         public static final int acceptMenuItem=0x7f040021;
+        public static final int callButton=0x7f040019;
         public static final int com_facebook_login_activity_progress_bar=0x7f040005;
         public static final int com_facebook_picker_activity_circle=0x7f040004;
         public static final int com_facebook_picker_checkbox=0x7f040007;
@@ -250,8 +251,6 @@ containing a value of this type.
         public static final int com_facebook_usersettingsfragment_login_button=0x7f040017;
         public static final int com_facebook_usersettingsfragment_logo_image=0x7f040015;
         public static final int com_facebook_usersettingsfragment_profile_name=0x7f040016;
-        public static final int contactName=0x7f040018;
-        public static final int contactPhoneNumber=0x7f040019;
         public static final int contentHolder=0x7f04001b;
         public static final int createNewMenuItem=0x7f040026;
         public static final int discardMenuItem=0x7f040027;
@@ -262,6 +261,7 @@ containing a value of this type.
         public static final int large=0x7f040002;
         public static final int loginButton=0x7f04001e;
         public static final int logoutMenuItem=0x7f040029;
+        public static final int nameHolder=0x7f040018;
         public static final int newStickyNoteContent=0x7f04001c;
         public static final int newStickyNoteTitle=0x7f04001a;
         public static final int normal=0x7f040001;
@@ -287,13 +287,12 @@ containing a value of this type.
         public static final int com_facebook_placepickerfragment=0x7f03000a;
         public static final int com_facebook_placepickerfragment_list_row=0x7f03000b;
         public static final int com_facebook_usersettingsfragment=0x7f03000c;
-        public static final int contact_item=0x7f03000d;
-        public static final int contacts_listview=0x7f03000e;
-        public static final int create_edit_stickynote=0x7f03000f;
-        public static final int list_item=0x7f030010;
-        public static final int list_of_notes=0x7f030011;
-        public static final int main=0x7f030012;
-        public static final int stickynote=0x7f030013;
+        public static final int contact_view=0x7f03000d;
+        public static final int create_edit_stickynote=0x7f03000e;
+        public static final int list_item=0x7f03000f;
+        public static final int list_of_notes=0x7f030010;
+        public static final int main=0x7f030011;
+        public static final int stickynote=0x7f030012;
     }
     public static final class menu {
         public static final int create_edit_menu=0x7f090000;
@@ -304,6 +303,7 @@ containing a value of this type.
         public static final int action_settings=0x7f05001b;
         public static final int app_id=0x7f05001a;
         public static final int app_name=0x7f050019;
+        public static final int callButtonTag=0x7f050029;
         public static final int com_facebook_choose_friends=0x7f05000f;
         public static final int com_facebook_dialogloginactivity_ok_button=0x7f050000;
         public static final int com_facebook_internet_permission_error_message=0x7f050013;

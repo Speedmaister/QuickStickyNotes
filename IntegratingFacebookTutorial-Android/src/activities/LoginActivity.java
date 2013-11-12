@@ -43,7 +43,7 @@ public class LoginActivity extends Activity {
 		ParseUser currentUser = ParseUser.getCurrentUser();
 		if ((currentUser != null) && ParseFacebookUtils.isLinked(currentUser)) {
 			// Go to the user info activity
-			showUserDetailsActivity();
+			showUserListOfStickyNotesActivity();
 		}
 	}
 
@@ -75,17 +75,17 @@ public class LoginActivity extends Activity {
 				} else if (user.isNew()) {
 					Log.d(ParseInitializer.TAG,
 							"User signed up and logged in through Facebook!");
-					showUserDetailsActivity();
+					showUserListOfStickyNotesActivity();
 				} else {
 					Log.d(ParseInitializer.TAG,
 							"User logged in through Facebook!");
-					showUserDetailsActivity();
+					showUserListOfStickyNotesActivity();
 				}
 			}
 		});
 	}
 
-	private void showUserDetailsActivity() {
+	private void showUserListOfStickyNotesActivity() {
 		Intent intent = new Intent(this, UserListOfNotesActivity.class);
 		startActivity(intent);
 	}

@@ -2,6 +2,7 @@ package activities;
 
 import java.util.ArrayList;
 
+import models.Contact;
 import models.ContentTypes;
 import models.ImageContent;
 import models.StickyNote;
@@ -11,16 +12,21 @@ import android.app.ActionBar;
 import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler.Callback;
 import android.os.Message;
 import android.support.v4.app.NavUtils;
 import android.util.Pair;
 import android.view.Gravity;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.View;
+import android.view.View.OnClickListener;
 import android.view.ViewGroup.LayoutParams;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -36,11 +42,13 @@ public class StickyNoteDetailedActivity extends Activity implements
 	// private String stickyNoteId;
 	private StickyNote stickyNote;
 	private int position;
+	private String facebookId;
 	private TextView stickyNoteTitleHolder;
 	private LinearLayout stickyNoteContentHolder;
 	private ProgressDialog progressDialog;
 	private ActionBar actionBar;
 	private StickyNoteContent cachedStickyNoteContent;
+	private ArrayList<Contact> contactsInserted= new ArrayList<Contact>();;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -58,6 +66,7 @@ public class StickyNoteDetailedActivity extends Activity implements
 		Intent intent = getIntent();
 		Bundle selectedStickyNoteBundle = intent.getExtras();
 		position = selectedStickyNoteBundle.getInt("position");
+		facebookId = selectedStickyNoteBundle.getString("facebookId");
 		stickyNote = StickyNotesPersister.getNote(position);
 
 		stickyNoteTitleHolder.setText(stickyNote.getTitle());
@@ -67,7 +76,8 @@ public class StickyNoteDetailedActivity extends Activity implements
 	}
 
 	private void displayStickyNoteContent() {
-		ArrayList<Pair<ContentTypes, Object>> contents = cachedStickyNoteContent.getContents();
+		ArrayList<Pair<ContentTypes, Object>> contents = cachedStickyNoteContent
+				.getContents();
 		int size = contents.size();
 		for (int i = 0; i < size; i++) {
 			Pair<ContentTypes, Object> element = contents.get(i);
@@ -79,7 +89,7 @@ public class StickyNoteDetailedActivity extends Activity implements
 				stickyNoteContentHolder.addView(textHolder);
 				break;
 			case Contact:
-				// TODO
+				handleContactContent(element);
 				break;
 			case Image:
 				ImageContent imageCont = (ImageContent) element.second;
@@ -93,6 +103,51 @@ public class StickyNoteDetailedActivity extends Activity implements
 				break;
 			}
 		}
+	}
+
+	private void handleContactContent(Pair<ContentTypes, Object> element) {
+		LinearLayout contactHolder = (LinearLayout) LayoutInflater.from(this)
+				.inflate(R.layout.contact_view, null);
+		Contact contact = (Contact) element.second;
+		Button callButton = (Button) contactHolder
+				.findViewById(R.id.callButton);
+		callButton.setOnClickListener(new OnClickListener() {
+
+			@Override
+			public void onClick(View eventTarget) {
+				makeCall(eventTarget);
+			}
+		});
+
+		TextView nameHolder = (TextView) contactHolder
+				.findViewById(R.id.nameHolder);
+		nameHolder.setText(contact.getName());
+
+		stickyNoteContentHolder.addView(contactHolder,
+				contactsInserted.size() + 1);
+		contactsInserted.add(contact);
+	}
+
+	private void makeCall(View eventTarget) {
+		Button button = (Button) eventTarget;
+		LinearLayout contactHolder = (LinearLayout) button.getParent();
+		TextView nameHolder = (TextView) contactHolder
+				.findViewById(R.id.nameHolder);
+		String contactName = nameHolder.getText().toString();
+		Contact contact = null;
+		int contactsCount = contactsInserted.size();
+		for (int j = 0; j < contactsCount; j++) {
+			Contact currentContact = contactsInserted.get(j);
+			if (currentContact.getName().equals(contactName)) {
+				contact = currentContact;
+				break;
+			}
+		}
+
+		String uri = "tel:" + contact.getNumber();
+		Intent intent = new Intent(Intent.ACTION_CALL);
+		intent.setData(Uri.parse(uri));
+		startActivity(intent);
 	}
 
 	@Override
@@ -136,6 +191,7 @@ public class StickyNoteDetailedActivity extends Activity implements
 		Bundle stickyNoteBundle = new Bundle();
 
 		stickyNoteBundle.putInt("position", position);
+		stickyNoteBundle.putString("facebookId", facebookId);
 
 		editStickyNoteIntent.putExtras(stickyNoteBundle);
 		startActivity(editStickyNoteIntent);
@@ -155,7 +211,8 @@ public class StickyNoteDetailedActivity extends Activity implements
 
 		progressDialog = ProgressDialog.show(this, "Delete sticky note.",
 				"Deleting...");
-		StickyNotesPersister.deleteStickyNote(stickyNote.getObjectId(), dismissDialog);
+		StickyNotesPersister.deleteStickyNote(stickyNote.getObjectId(),
+				dismissDialog);
 	}
 
 	private void startUserListOfNotesActivity() {
@@ -164,7 +221,7 @@ public class StickyNoteDetailedActivity extends Activity implements
 		// userListOfNotesIntent.putExtra("refreshStickyNotesList", true);
 		startActivity(userListOfNotesIntent);
 	}
-	
+
 	private void setImageViewLayout(ImageView imageViewer) {
 		LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(
 				LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT);
