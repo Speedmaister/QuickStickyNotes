@@ -2,6 +2,7 @@ package activities;
 
 import models.StickyNote;
 import models.StickyNoteContent;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.NavUtils;
 import android.view.MenuItem;
@@ -12,7 +13,7 @@ import com.parse.ParseUser;
 import com.parse.integratingfacebooktutorial.R;
 
 public class CreateNewStickyNoteActivity extends BaseEditActivity {
-	
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -39,6 +40,8 @@ public class CreateNewStickyNoteActivity extends BaseEditActivity {
 		case R.id.insertPictureMenuItem:
 			onInsertPictureMenuItemClicked();
 			return true;
+		case R.id.insertContactMenuItem:
+			onInsertContactMenuItemClicked();
 		case R.id.logoutMenuItem:
 			onLogoutMenuItemClicked();
 			return true;
@@ -46,12 +49,19 @@ public class CreateNewStickyNoteActivity extends BaseEditActivity {
 
 		return super.onMenuItemSelected(featureId, item);
 	}
-	
+
+	private void onInsertContactMenuItemClicked() {
+		Intent pickContactIntent = new Intent(this,activities.PickContactActivity.class);
+		//
+		// PROBLEM SPOT
+		//
+	    startActivityForResult(pickContactIntent, REQUEST_PICK_CONTACT);
+	}
+
 	private void createNewStickyNote() {
-		//String content = editContentHolder.getText().toString();
+		// String content = editContentHolder.getText().toString();
 		String title = editTitleHolder.getText().toString();
 		StickyNoteContent content = new StickyNoteContent();
-		
 
 		boolean isContentValid = setStickyNoteContent(content);
 		boolean isTitleValid = title != null && !title.isEmpty();

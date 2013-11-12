@@ -117,14 +117,14 @@ public class UserListOfNotesActivity extends ListActivity implements
 	@Override
 	protected void onListItemClick(ListView l, View v, int position, long id) {
 		super.onListItemClick(l, v, position, id);
-		StickyNote stickyNoteSelected = userNotes.get(position);
+		
 		Intent stickyNoteDetailedIntent = new Intent(
 				UserListOfNotesActivity.this, StickyNoteDetailedActivity.class);
+		
 		Bundle stickyNoteSelectedBundle = new Bundle();
 		stickyNoteSelectedBundle.putInt("position",
 				position);
-		//stickyNoteSelectedBundle.putString("objectId",
-		//		stickyNoteSelected.getObjectId());
+		
 		stickyNoteDetailedIntent.putExtras(stickyNoteSelectedBundle);
 		startActivity(stickyNoteDetailedIntent);
 	}
