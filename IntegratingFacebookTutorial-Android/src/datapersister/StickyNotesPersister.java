@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import models.StickyNote;
-import models.StickyNoteContent;
 import android.os.Handler.Callback;
 import android.os.Message;
 

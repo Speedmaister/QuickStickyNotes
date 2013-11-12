@@ -9,7 +9,6 @@ import android.view.MenuItem;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 
-import com.parse.ParseUser;
 import com.parse.integratingfacebooktutorial.R;
 
 public class CreateNewStickyNoteActivity extends BaseEditActivity {

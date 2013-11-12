@@ -10,7 +10,6 @@ import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.parse.ParseClassName;
 import com.parse.ParseObject;
-import com.parse.ParseUser;
 
 import datapersister.ExternalStoragePersister;
 
