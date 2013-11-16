@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android" >
+
+    <item
+        android:id="@+id/acceptMenuItem"
+        android:icon="@drawable/ic_action_accept"
+        android:showAsAction="ifRoom"
+        android:title="@string/acceptTitle"/>
+    <item
+        android:id="@+id/insertPictureMenuItem"
+        android:icon="@drawable/ic_action_new_picture"
+        android:showAsAction="ifRoom"
+        android:title="@string/insertPictureTitle"/>
+    <item
+        android:id="@+id/insertContactMenuItem"
+        android:icon="@drawable/ic_action_add_person"
+        android:showAsAction="ifRoom"
+        android:title="@string/insertContactTitle"/>
+    <item
+        android:id="@+id/insertMapMenuItem"
+        android:icon="@drawable/ic_action_map"
+        android:showAsAction="ifRoom"
+        android:title="@string/insertMapTitle"/>
+
+</menu>

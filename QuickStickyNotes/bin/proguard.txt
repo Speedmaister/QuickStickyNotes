@@ -1,0 +1,27 @@
+# view AndroidManifest.xml #generated:43
+-keep class com.facebook.LoginActivity { <init>(...); }
+
+# view res/layout/com_facebook_usersettingsfragment.xml #generated:48
+-keep class com.facebook.widget.LoginButton { <init>(...); }
+
+# view AndroidManifest.xml #generated:54
+-keep class com.quickstickynotes.activities.CreateNewStickyNoteActivity { <init>(...); }
+
+# view AndroidManifest.xml #generated:62
+-keep class com.quickstickynotes.activities.EditStickyNoteActivity { <init>(...); }
+
+# view AndroidManifest.xml #generated:30
+-keep class com.quickstickynotes.activities.LoginActivity { <init>(...); }
+
+# view AndroidManifest.xml #generated:20
+-keep class com.quickstickynotes.activities.ParseInitializer { <init>(...); }
+
+# view AndroidManifest.xml #generated:70
+-keep class com.quickstickynotes.activities.PickContactActivity { <init>(...); }
+
+# view AndroidManifest.xml #generated:46
+-keep class com.quickstickynotes.activities.StickyNoteDetailedActivity { <init>(...); }
+
+# view AndroidManifest.xml #generated:40
+-keep class com.quickstickynotes.activities.UserListOfNotesActivity { <init>(...); }
+

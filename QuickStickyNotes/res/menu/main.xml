@@ -1,0 +1,33 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android" >
+
+    <item
+        android:id="@+id/searchMenuItem"
+        android:actionViewClass="android.widget.SearchView"
+        android:icon="@drawable/ic_action_search"
+        android:showAsAction="ifRoom"
+        android:title="@string/searchTitle"/>
+    
+    <item
+        android:id="@+id/createNewMenuItem"
+        android:icon="@drawable/ic_action_new"
+        android:showAsAction="ifRoom"
+        android:title="@string/createNewTitle"/>
+    
+    <item
+        android:id="@+id/discardMenuItem"
+        android:icon="@drawable/ic_action_discard"
+        android:showAsAction="ifRoom"
+        android:title="@string/discardTitle"/>
+    
+    <item
+        android:id="@+id/editMenuItem"
+        android:icon="@drawable/ic_action_edit"
+        android:showAsAction="ifRoom"
+        android:title="@string/editTitle"/>
+    
+    <item
+        android:id="@+id/logoutMenuItem"
+        android:showAsAction="collapseActionView"
+        android:title="@string/logout"/>
+
+</menu>
