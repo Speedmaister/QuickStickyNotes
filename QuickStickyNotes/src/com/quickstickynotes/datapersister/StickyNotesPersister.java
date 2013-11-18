@@ -1,6 +1,7 @@
 package com.quickstickynotes.datapersister;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 import android.os.Handler.Callback;
@@ -12,12 +13,19 @@ import com.parse.GetCallback;
 import com.parse.ParseException;
 import com.parse.ParseQuery;
 import com.quickstickynotes.models.StickyNote;
+import com.quickstickynotes.models.StickyNoteContent;
 
 public class StickyNotesPersister {
 	private static List<StickyNote> notes = new ArrayList<StickyNote>();
+	private static HashMap<String, StickyNoteContent> contentsLoaded = 
+								new HashMap<String, StickyNoteContent>();
 
 	public static List<StickyNote> getNotes() {
 		return notes;
+	}
+
+	public static StickyNote getNote(int position) {
+		return notes.get(position);
 	}
 
 	public static List<StickyNote> loadNotesFromParse(String userId,
@@ -60,8 +68,19 @@ public class StickyNotesPersister {
 		});
 	}
 
-	public static StickyNote getNote(int position) {
-		return notes.get(position);
+	public static void cacheStickyNoteContent(String stickyNoteId,StickyNoteContent content){
+		contentsLoaded.put(stickyNoteId, content);
 	}
-
+	
+	public static void clearCachedStickyNoteContent(String stickyNoteId){
+		contentsLoaded.remove(stickyNoteId);
+	}
+	
+	public static boolean isStickyNoteCached(String stickyNoteId){
+		return contentsLoaded.containsKey(stickyNoteId);
+	}
+	
+	public static StickyNoteContent getContentById(String stickyNoteId){
+		return contentsLoaded.get(stickyNoteId);
+	}
 }

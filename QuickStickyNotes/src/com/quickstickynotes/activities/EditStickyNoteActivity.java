@@ -25,7 +25,8 @@ import com.quickstickynotes.models.StickyNote;
 import com.quickstickynotes.models.StickyNoteContent;
 import com.quickstickynotes.models.TextContent;
 
-public class EditStickyNoteActivity extends BaseEditActivity implements IDisplayContent {
+public class EditStickyNoteActivity extends BaseEditActivity implements
+		IDisplayContent {
 
 	private StickyNote stickyNote;
 	private int position;
@@ -48,7 +49,9 @@ public class EditStickyNoteActivity extends BaseEditActivity implements IDisplay
 		stickyNote = StickyNotesPersister.getNote(position);
 		editTitleHolder.setText(stickyNote.getTitle());
 		facebookId = selectedStickyNoteBundle.getString("facebookId");
-		new GetAndDisplayStickyNoteContentTask(this).execute(stickyNote);
+		GetAndDisplayStickyNoteContentTask stickyNoteContentTask = 
+										new GetAndDisplayStickyNoteContentTask(this);
+		stickyNoteContentTask.execute(stickyNote);
 	}
 
 	private void handleContactContent(Pair<ContentTypes, Object> element) {
@@ -136,6 +139,9 @@ public class EditStickyNoteActivity extends BaseEditActivity implements IDisplay
 	private void saveNewStickyNote(StickyNoteContent content, String title) {
 		stickyNote.setTitle(title);
 		stickyNote.setContent(content, this);
+		String stickyNoteId = stickyNote.getObjectId();
+		StickyNotesPersister.clearCachedStickyNoteContent(stickyNoteId);
+		StickyNotesPersister.cacheStickyNoteContent(stickyNoteId, content);
 		stickyNote.saveInBackground();
 	}
 
@@ -152,8 +158,7 @@ public class EditStickyNoteActivity extends BaseEditActivity implements IDisplay
 
 	@Override
 	public void displayStickyNoteContent(StickyNoteContent content) {
-		ArrayList<Pair<ContentTypes, Object>> contents = content
-				.getContents();
+		ArrayList<Pair<ContentTypes, Object>> contents = content.getContents();
 		int size = contents.size();
 		for (int i = 0; i < size; i++) {
 			Pair<ContentTypes, Object> element = contents.get(i);

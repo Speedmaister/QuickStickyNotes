@@ -11,8 +11,8 @@ import java.util.List;
 
 import android.app.Activity;
 import android.util.Log;
+import android.widget.Toast;
 
-import com.google.api.client.googleapis.extensions.android.gms.auth.GoogleAccountCredential;
 import com.google.api.client.googleapis.extensions.android.gms.auth.UserRecoverableAuthIOException;
 import com.google.api.client.http.FileContent;
 import com.google.api.client.http.GenericUrl;
@@ -32,19 +32,16 @@ public class GoogleDrivePersister {
 
 	private static GoogleDrivePersister persister;
 	private Drive service;
-	private GoogleAccountCredential credential;
 	private static StringBuilder query;
 
-	public static void createPersister(Drive service,
-			GoogleAccountCredential credential) {
+	public static void createPersister(Drive service) {
 		query = new StringBuilder();
 		persister = new GoogleDrivePersister();
-		persister.setParams(service, credential);
+		persister.setParams(service);
 	}
 
-	private void setParams(Drive service, GoogleAccountCredential credential) {
+	private void setParams(Drive service) {
 		this.service = service;
-		this.credential = credential;
 	}
 
 	public static void saveFileToDrive(final Activity callingActivity,
@@ -70,16 +67,18 @@ public class GoogleDrivePersister {
 							mediaContent);
 					File file = some.execute();
 					if (file != null) {
-						Log.d("UPLOAD", "SUCCESSFULL");
+						Toast.makeText(callingActivity,
+								"Sticky note saved successfully.",
+								Toast.LENGTH_SHORT).show();
 					}
-				} catch (IllegalStateException e) {
-					e.printStackTrace();
-					Log.d("Error", e.getMessage());
 				} catch (UserRecoverableAuthIOException e) {
 					callingActivity.startActivityForResult(e.getIntent(),
 							REQUEST_AUTHORIZATION);
 				} catch (IOException e) {
-					e.printStackTrace();
+					// Have to tell user that image save to Drive has failed
+					Toast.makeText(callingActivity,
+							"A sticky note image failed to save.",
+							Toast.LENGTH_SHORT).show();
 				}
 
 				fileContent.delete();
@@ -89,23 +88,18 @@ public class GoogleDrivePersister {
 		saveFileThread.start();
 	}
 
-	private void writeDataToFile(java.io.File fileContent, final byte[] image) {
+	private void writeDataToFile(java.io.File fileContent, final byte[] image)
+			throws IOException {
 		BufferedOutputStream writer = null;
+
+		writer = new BufferedOutputStream(new FileOutputStream(fileContent));
+		writer.write(image, 0, image.length);
 		try {
-			writer = new BufferedOutputStream(new FileOutputStream(fileContent));
-			writer.write(image, 0, image.length);
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} finally {
-			try {
-				if (writer != null) {
-					writer.close();
-				}
-			} catch (IOException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
+			if (writer != null) {
+				writer.close();
 			}
+		} catch (IOException e) {
+			e.printStackTrace();
 		}
 	}
 
@@ -118,7 +112,7 @@ public class GoogleDrivePersister {
 		DataInputStream dis = null;
 		byte[] image = null;
 		try {
-			List<File> result = getFileFromQuery();
+			List<File> result = getFilesFromQuery();
 			if (!result.isEmpty()) {
 				File imageFile = result.get(0);
 				if (imageFile.getDownloadUrl() != null
@@ -139,29 +133,20 @@ public class GoogleDrivePersister {
 			// An error occurred.
 			e.printStackTrace();
 		} finally {
-			closeStreams(bis, dis);
+			try {
+				if (dis != null) {
+					dis.close();
+				}
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
 		}
 
 		query.delete(0, query.length());
 		return image;
 	}
 
-	private static void closeStreams(BufferedInputStream bis,
-			DataInputStream dis) {
-		try {
-			if (dis != null) {
-				dis.close();
-			}
-
-			if (bis != null) {
-				bis.close();
-			}
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-	}
-
-	private static List<File> getFileFromQuery() throws IOException {
+	private static List<File> getFilesFromQuery() throws IOException {
 		Files.List request = persister.service.files().list();
 		request.setQ(query.toString());
 		List<File> result = new ArrayList<File>();
@@ -181,14 +166,14 @@ public class GoogleDrivePersister {
 				&& request.getPageToken().length() > 0);
 		return result;
 	}
-	
-	public static void deleteFile(String filename){
+
+	public static void deleteFile(String filename) {
 		query.append("title = '");
 		query.append(filename);
 		query.append("'");
-		
+
 		try {
-			List<File> result = getFileFromQuery();
+			List<File> result = getFilesFromQuery();
 			if (!result.isEmpty()) {
 				File imageFile = result.get(0);
 				String fileId = imageFile.getId();

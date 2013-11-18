@@ -1,7 +1,5 @@
 package com.quickstickynotes.datapersister;
 
-import java.io.IOException;
-import java.net.MalformedURLException;
 import java.net.URL;
 
 import android.graphics.Bitmap;
@@ -18,13 +16,10 @@ public class DownloadFacebookProfilePictureTask extends
 		try {
 			bitmapProfilePicture = BitmapFactory.decodeStream(profilePictureUrl
 					.openConnection().getInputStream());
-		} catch (MalformedURLException e) {
-			// TODO Auto-generated catch block
+		} catch (Exception e) {
+			// Failed to retrieve profile picture
 			e.printStackTrace();
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+		} 
 
 		return bitmapProfilePicture;
 	}

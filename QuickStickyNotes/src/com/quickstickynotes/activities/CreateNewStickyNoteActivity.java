@@ -72,7 +72,6 @@ public class CreateNewStickyNoteActivity extends BaseEditActivity {
 	}
 
 	private void createNewStickyNote() {
-		// String content = editContentHolder.getText().toString();
 		String title = editTitleHolder.getText().toString();
 		StickyNoteContent content = new StickyNoteContent();
 

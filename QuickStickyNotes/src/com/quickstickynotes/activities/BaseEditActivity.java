@@ -40,7 +40,7 @@ public class BaseEditActivity extends Activity implements ILogoutMenuItem {
 
 	protected static final int REQUEST_PICK_CONTACT = 3;
 	protected static final int SELECT_PHOTO = 100;
-	protected static final int IMAGE_SIZE = 300;
+	protected static final int IMAGE_SIZE = 400;
 
 	protected ArrayList<Contact> contactsInserted = new ArrayList<Contact>();
 	protected String facebookId;
@@ -63,39 +63,46 @@ public class BaseEditActivity extends Activity implements ILogoutMenuItem {
 		switch (requestCode) {
 		case SELECT_PHOTO:
 			if (resultCode == RESULT_OK) {
-				Uri selectedImageUri = data.getData();
-				try {
-					Bitmap selectedImage = decodeUri(selectedImageUri);
-					ImageView imageViewer = new ImageView(this);
-					imageViewer.setImageBitmap(selectedImage);
-					setImageViewLayout(imageViewer);
-
-					contentHolder.addView(imageViewer);
-				} catch (FileNotFoundException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
+				displayImage(data);
 			}
 
 			break;
 		case REQUEST_PICK_CONTACT:
 			if (resultCode == RESULT_OK) {
-				Uri contactUri = data.getData();
-				String[] projection = { Phone.NUMBER, Contacts.DISPLAY_NAME };
-				Cursor cursor = getContentResolver().query(contactUri,
-						projection, null, null, null);
-				cursor.moveToFirst();
-
-				int nameColumn = cursor.getColumnIndex(Contacts.DISPLAY_NAME);
-				int numberColumn = cursor.getColumnIndex(Phone.NUMBER);
-				final String number = cursor.getString(numberColumn);
-				String name = cursor.getString(nameColumn);
-				Contact contact = new Contact(name, number);
-				contactsInserted.add(contact);
-				createContactView(number, name);
+				displayContact(data);
 			}
 
 			break;
+		}
+	}
+
+	private void displayContact(Intent data) {
+		Uri contactUri = data.getData();
+		String[] projection = { Phone.NUMBER, Contacts.DISPLAY_NAME };
+		Cursor cursor = getContentResolver().query(contactUri,
+				projection, null, null, null);
+		cursor.moveToFirst();
+
+		int nameColumn = cursor.getColumnIndex(Contacts.DISPLAY_NAME);
+		int numberColumn = cursor.getColumnIndex(Phone.NUMBER);
+		final String number = cursor.getString(numberColumn);
+		String name = cursor.getString(nameColumn);
+		Contact contact = new Contact(name, number);
+		contactsInserted.add(contact);
+		createContactView(number, name);
+	}
+
+	private void displayImage(Intent data) {
+		Uri selectedImageUri = data.getData();
+		try {
+			Bitmap selectedImage = getAndResizeImage(selectedImageUri);
+			ImageView imageViewer = new ImageView(this);
+			imageViewer.setImageBitmap(selectedImage);
+			setImageViewLayout(imageViewer);
+
+			contentHolder.addView(imageViewer);
+		} catch (FileNotFoundException e) {
+			// File was pick by the user so this exception is only needed by the IDE
 		}
 	}
 
@@ -143,7 +150,7 @@ public class BaseEditActivity extends Activity implements ILogoutMenuItem {
 		return true;
 	}
 
-	private Bitmap decodeUri(Uri selectedImage) throws FileNotFoundException {
+	private Bitmap getAndResizeImage(Uri selectedImage) throws FileNotFoundException {
 
 		// Decode image size
 		BitmapFactory.Options options = new BitmapFactory.Options();

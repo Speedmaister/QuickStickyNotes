@@ -2,7 +2,6 @@ package com.quickstickynotes.models;
 
 import java.lang.reflect.Type;
 import java.util.ArrayList;
-import java.util.Date;
 
 import android.app.Activity;
 import android.util.Pair;
@@ -74,18 +73,6 @@ public class StickyNote extends ParseObject {
 					ImageContent imageContent = new ImageContent(image);
 					content.insertImageChild(imageContent);
 				}
-				// byte[] image = null;
-				// try {
-				// image = (new DownloadStickyNoteImage().execute(fileName))
-				// .get();
-				// } catch (InterruptedException e) {
-				// // TODO Auto-generated catch block
-				// e.printStackTrace();
-				// } catch (ExecutionException e) {
-				// // TODO Auto-generated catch block
-				// e.printStackTrace();
-				// }
-				//
 
 				/*
 				 * if (ExternalStoragePersister
@@ -170,9 +157,5 @@ public class StickyNote extends ParseObject {
 		filenameBuilder.append(".jpg");
 
 		return filenameBuilder.toString();
-	}
-
-	public Date getDateCreated() {
-		return getCreatedAt();
 	}
 }

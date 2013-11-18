@@ -69,8 +69,46 @@ public class StickyNoteDetailedActivity extends Activity implements
 		stickyNote = StickyNotesPersister.getNote(position);
 
 		stickyNoteTitleHolder.setText(stickyNote.getTitle());
-		new GetAndDisplayStickyNoteContentTask(this).execute(stickyNote);
+		GetAndDisplayStickyNoteContentTask stickyNoteContentTask = 
+								new GetAndDisplayStickyNoteContentTask(this);
+		stickyNoteContentTask.execute(stickyNote);
 	}
+
+	@Override
+	public boolean onCreateOptionsMenu(Menu menu) {
+		MenuInflater inflater = getMenuInflater();
+		inflater.inflate(R.menu.main, menu);
+
+		MenuItem search = menu.findItem(R.id.searchMenuItem);
+		search.setVisible(false);
+
+		MenuItem newStickyNote = menu.findItem(R.id.createNewMenuItem);
+		newStickyNote.setVisible(false);
+
+		return true;
+	}
+
+	@Override
+	public boolean onMenuItemSelected(int featureId, MenuItem item) {
+		int itemId = item.getItemId();
+		switch (itemId) {
+		case android.R.id.home:
+			NavUtils.navigateUpFromSameTask(this);
+			return true;
+		case R.id.editMenuItem:
+			startEditStickyNoteActivity();
+			return true;
+		case R.id.discardMenuItem:
+			deleteStickyNote();
+			return true;
+		case R.id.logoutMenuItem:
+			onLogoutMenuItemClicked();
+			return true;
+		}
+
+		return super.onMenuItemSelected(featureId, item);
+	}
+
 
 	private void handleContactContent(Pair<ContentTypes, Object> element) {
 		LinearLayout contactHolder = (LinearLayout) LayoutInflater.from(this)
@@ -116,42 +154,7 @@ public class StickyNoteDetailedActivity extends Activity implements
 		intent.setData(Uri.parse(uri));
 		startActivity(intent);
 	}
-
-	@Override
-	public boolean onCreateOptionsMenu(Menu menu) {
-		MenuInflater inflater = getMenuInflater();
-		inflater.inflate(R.menu.main, menu);
-
-		MenuItem search = menu.findItem(R.id.searchMenuItem);
-		search.setVisible(false);
-
-		MenuItem newStickyNote = menu.findItem(R.id.createNewMenuItem);
-		newStickyNote.setVisible(false);
-
-		return true;
-	}
-
-	@Override
-	public boolean onMenuItemSelected(int featureId, MenuItem item) {
-		int itemId = item.getItemId();
-		switch (itemId) {
-		case android.R.id.home:
-			NavUtils.navigateUpFromSameTask(this);
-			return true;
-		case R.id.editMenuItem:
-			startEditStickyNoteActivity();
-			return true;
-		case R.id.discardMenuItem:
-			deleteStickyNote();
-			return true;
-		case R.id.logoutMenuItem:
-			onLogoutMenuItemClicked();
-			return true;
-		}
-
-		return super.onMenuItemSelected(featureId, item);
-	}
-
+	
 	private void startEditStickyNoteActivity() {
 		Intent editStickyNoteIntent = new Intent(this,
 				EditStickyNoteActivity.class);

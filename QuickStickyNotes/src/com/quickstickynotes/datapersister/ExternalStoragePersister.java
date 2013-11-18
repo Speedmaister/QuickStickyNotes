@@ -77,7 +77,8 @@ public class ExternalStoragePersister {
 		imageFile.setWritable(true);
 		BufferedOutputStream writer = null;
 		try {
-			writer = new BufferedOutputStream(new FileOutputStream(imageFile));
+			FileOutputStream fos = new FileOutputStream(imageFile);
+			writer = new BufferedOutputStream(fos);
 			writer.write(image, 0, image.length);
 			return true;
 		} catch (IOException e) {
@@ -85,7 +86,9 @@ public class ExternalStoragePersister {
 			e.printStackTrace();
 		} finally {
 			try {
-				writer.close();
+				if (writer != null) {
+					writer.close();
+				}
 			} catch (IOException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
@@ -114,21 +117,21 @@ public class ExternalStoragePersister {
 				fis = new FileInputStream(imageFile);
 				bis = new BufferedInputStream(fis);
 				dis = new DataInputStream(bis);
-				
+
 				if (dis.available() > 0) {
 					dis.readFully(image, 0, image.length);
-				}				
+				}
 			} catch (FileNotFoundException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			} catch (IOException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
-			}finally{
+			} finally {
 				try {
-					dis.close();
-					bis.close();
-					fis.close();
+					if (dis != null) {
+						dis.close();
+					}
 				} catch (IOException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();

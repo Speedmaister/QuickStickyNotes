@@ -1,10 +1,8 @@
 package com.quickstickynotes.activities;
 
-import java.net.MalformedURLException;
 import java.net.URL;
-import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
-import java.util.concurrent.ExecutionException;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -15,6 +13,7 @@ import android.app.ListActivity;
 import android.content.Intent;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
 import android.os.Handler.Callback;
@@ -55,7 +54,6 @@ public class UserListOfNotesActivity extends ListActivity implements
 	private static final int REQUEST_ACCOUNT_PICKER = 1;
 	private static final String APP_NAME = "QuickStickyNotes";
 
-	private ArrayList<String> scopes = new ArrayList<String>();
 	private GoogleAccountCredential credential;
 
 	private String facebookId;
@@ -71,9 +69,8 @@ public class UserListOfNotesActivity extends ListActivity implements
 		setContentView(R.layout.list_of_notes);
 		actionBar = this.getActionBar();
 
-		scopes.add(DriveScopes.DRIVE);
-		scopes.add(DriveScopes.DRIVE_APPDATA);
-		credential = GoogleAccountCredential.usingOAuth2(this, DriveScopes.all());
+		credential = GoogleAccountCredential.usingOAuth2(this,
+				Arrays.asList(DriveScopes.DRIVE_APPDATA));
 
 		// Fetch Facebook user info if the session is active
 		Session session = ParseFacebookUtils.getSession();
@@ -115,7 +112,7 @@ public class UserListOfNotesActivity extends ListActivity implements
 					connection.saveInBackground();
 					credential.setSelectedAccountName(googleName);
 					Drive service = getDriveService(credential);
-					GoogleDrivePersister.createPersister(service, credential);
+					GoogleDrivePersister.createPersister(service);
 				}
 			}
 
@@ -231,7 +228,7 @@ public class UserListOfNotesActivity extends ListActivity implements
 					credential.setSelectedAccountName(connection
 							.getGoogleName());
 					Drive service = getDriveService(credential);
-					GoogleDrivePersister.createPersister(service, credential);
+					GoogleDrivePersister.createPersister(service);
 				} else {
 					startActivityForResult(credential.newChooseAccountIntent(),
 							REQUEST_ACCOUNT_PICKER);
@@ -242,7 +239,8 @@ public class UserListOfNotesActivity extends ListActivity implements
 
 	private Drive getDriveService(GoogleAccountCredential credential) {
 		return new Drive.Builder(AndroidHttp.newCompatibleTransport(),
-				new GsonFactory(), credential).setApplicationName(APP_NAME).build();
+				new GsonFactory(), credential).setApplicationName(APP_NAME)
+				.build();
 	}
 
 	private void updateViewsWithProfileInfo() {
@@ -290,15 +288,11 @@ public class UserListOfNotesActivity extends ListActivity implements
 					+ facebookId + "/picture?type=small");
 			bitmapProfilePicture = (new DownloadFacebookProfilePictureTask()
 					.execute(profilePictureUrl)).get();
-
-		} catch (InterruptedException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (MalformedURLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (ExecutionException e) {
-			// TODO Auto-generated catch block
+		} catch (Exception e) {
+			// Set default profile picture
+			int defaultPicId = com.facebook.android.R.drawable.com_facebook_profile_default_icon;
+			bitmapProfilePicture = BitmapFactory.decodeResource(getResources(),
+					defaultPicId);
 			e.printStackTrace();
 		}
 

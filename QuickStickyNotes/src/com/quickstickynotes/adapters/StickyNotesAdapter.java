@@ -14,13 +14,11 @@ import com.quickstickynotes.R;
 import com.quickstickynotes.models.StickyNote;
 
 public class StickyNotesAdapter extends BaseAdapter {
-	private ListActivity activity;
 	private List<StickyNote> data;
 	private static LayoutInflater inflater = null;
 
 	public StickyNotesAdapter(ListActivity activity, List<StickyNote> userNotes)
 	{
-		this.activity = activity;
 		this.data = userNotes;
 		inflater = (LayoutInflater) activity
 				.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
