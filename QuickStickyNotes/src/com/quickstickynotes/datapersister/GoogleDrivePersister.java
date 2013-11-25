@@ -66,19 +66,19 @@ public class GoogleDrivePersister {
 					Insert some = persister.service.files().insert(body,
 							mediaContent);
 					File file = some.execute();
-					if (file != null) {
+					/*if (file != null) {
 						Toast.makeText(callingActivity,
 								"Sticky note saved successfully.",
 								Toast.LENGTH_SHORT).show();
-					}
+					}*/
 				} catch (UserRecoverableAuthIOException e) {
 					callingActivity.startActivityForResult(e.getIntent(),
 							REQUEST_AUTHORIZATION);
 				} catch (IOException e) {
 					// Have to tell user that image save to Drive has failed
-					Toast.makeText(callingActivity,
+					/*Toast.makeText(callingActivity,
 							"A sticky note image failed to save.",
-							Toast.LENGTH_SHORT).show();
+							Toast.LENGTH_SHORT).show();*/
 				}
 
 				fileContent.delete();
